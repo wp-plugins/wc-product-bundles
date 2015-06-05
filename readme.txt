@@ -1,4 +1,4 @@
-=== WC Fields Factory ===
+=== WC Product Bundles ===
 Contributors: mycholan
 Tags: Woocommerce product bundle
 Requires at least: 3.5
