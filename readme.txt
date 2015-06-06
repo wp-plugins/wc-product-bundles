@@ -11,7 +11,7 @@ Bundle two or more woocommerce products together and sell them at a discounted r
 
 == Description ==
 
-WC Product Bundle allows you to bundle two or more woocommerce products together and sell them at a discounted rate. No complex configurationa are required, just few steps you can setup and sell Bundled Products. 
+WC Product Bundle allows you to bundle two or more woocommerce products together and sell them at a discounted rate. No complex configurations are required, just few steps you can setup and sell Bundled Products. 
 
 = Features =
 * Creating bundled products with ease
