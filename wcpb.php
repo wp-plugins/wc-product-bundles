@@ -3,7 +3,7 @@
  Plugin Name: WC Product Bundles
  Plugin URI: http://sarkware.com/wc-product-bundle-bundle-products-together-and-sell-them-with-a-discounted-rate/
  Description: Bundle two or more woocommerce products together and sell them at a discounted rate. 
- Version: 1.0.0
+ Version: 1.0.1
  Author: Saravana Kumar K
  Author URI: http://www.iamsark.com/
  License: GPL

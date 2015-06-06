@@ -3,15 +3,15 @@ Contributors: mycholan
 Tags: Woocommerce product bundle
 Requires at least: 3.5
 Tested up to: 4.2.2
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WC Product Bundle allows you to bundle two or more woocommerce products together and sell them at a discounted rate.
+Bundle two or more woocommerce products together and sell them at a discounted rate.
 
 == Description ==
 
-WC Product Bundle allows you to bundle two or more woocommerce products together and sell them at a discounted rate.
+WC Product Bundle allows you to bundle two or more woocommerce products together and sell them at a discounted rate. No complex configurationa are required, just few steps you can setup and sell Bundled Products. 
 
 = Features =
 * Creating bundled products with ease
@@ -38,3 +38,7 @@ WC Product Bundle allows you to bundle two or more woocommerce products together
 
 = 1.0.0 =
 * First Public Release.
+
+= 1.0.1 =
+* Option Label text updates
+* 'wcpb/bundle/before/product/content/rendering' and 'wcpb/bundle/after/product/content/rendering' action hook introduced.

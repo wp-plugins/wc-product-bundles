@@ -36,7 +36,7 @@ class wcpb_product_form {
 				
 			} else { ?>
 			
-			<?php do_action( 'wcpb/bundle/before/rendering' ); ?>		
+			<?php do_action( 'wcpb/bundle/before/main/content/rendering' ); ?>		
 			
 			<?php foreach ( $bundles as $key => $value ) : ?>
 				<?php $bundle = wc_get_product( $key ); 
@@ -47,6 +47,9 @@ class wcpb_product_form {
 						$product_url = get_the_permalink( $key );
 					}
 				?>
+				
+				<?php do_action( 'wcpb/bundle/before/product/content/rendering', $bundle ); ?>
+				
 				<table class="wcpb-bundled-product">
 					<tr>
 						<!-- bundled product's thumbnail section -->
@@ -63,9 +66,12 @@ class wcpb_product_form {
 						</td>
 					</tr>
 				</table>
+				
+				<?php do_action( 'wcpb/bundle/after/product/content/rendering', $bundle ); ?>
+				
 			<?php endforeach; ?>
 			
-			<?php do_action( 'wcpb/bundle/after/rendering' ); ?>
+			<?php do_action( 'wcpb/bundle/after/main/content/rendering' ); ?>
 			
 			<?php 
 			
