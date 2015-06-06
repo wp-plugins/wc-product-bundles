@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * @author 		: Saravana Kumar K
+ * @copyright	: sarkware.com
+ * @todo		: Wcpb Product Bundle Class which extends WC_Product
+ * 				  It mainly responsible for registering 'wcpb' product type and managing bundle pricing.
+ *
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }

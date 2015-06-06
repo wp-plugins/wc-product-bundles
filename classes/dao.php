@@ -1,5 +1,10 @@
 <?php 
-
+/**
+ * @author 		: Saravana Kumar K
+ * @copyright	: sarkware.com
+ * @todo		: This is the core Data Access Object for the entire wcpb related CRUD operations.
+ *
+ */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 class wcpb_dao {
@@ -42,7 +47,7 @@ class wcpb_dao {
 				$parent_post_id = wp_get_post_parent_id( $bundle );		
 				$parent_product = wc_get_product( $parent_post_id );
 				$title = $parent_product->get_title() ." - ";
-				$attributes = $this->get_attributes( $variation );
+				$attributes = wcpb_utils::get_variable_attributes( $variation );
 				foreach ( $attributes as $attr ) {					
 					if( $index == 0 ) {
 						$title .= 'with '. $attr["option"];
@@ -85,6 +90,18 @@ class wcpb_dao {
 			/* Update sale price meta */
 			delete_post_meta( $post_id, '_wcpb_product_sale_price' );
 			add_post_meta( $post_id, '_wcpb_product_sale_price', $_REQUEST['_wcpb_product_sale_price'] );
+			/* Update bundle visibility meta */
+			delete_post_meta( $post_id, '_wcpb_show_bundle_on_product' );
+			delete_post_meta( $post_id, '_wcpb_show_bundle_on_cart' );
+			delete_post_meta( $post_id, '_wcpb_show_bundle_on_order' );
+			
+			$on_product = isset( $_REQUEST['_wcpb_show_bundle_on_product'] ) ? 'yes' : 'no';
+			$on_cart = isset( $_REQUEST['_wcpb_show_bundle_on_cart'] ) ? 'yes' : 'no';
+			$on_order = isset( $_REQUEST['_wcpb_show_bundle_on_order'] ) ? 'yes' : 'no';
+			
+			add_post_meta( $post_id, '_wcpb_show_bundle_on_product', $on_product );
+			add_post_meta( $post_id, '_wcpb_show_bundle_on_cart', $on_cart );
+			add_post_meta( $post_id, '_wcpb_show_bundle_on_order', $on_order );			
 			/* Update the bundles */
 			$bundles =  json_decode( get_post_meta( $post_id, "wcpb_bundle_products", true ), true );			
 			if( is_array( $bundles ) ) {
@@ -120,17 +137,6 @@ class wcpb_dao {
 			$where .= ' AND ' . $wpdb->posts . '.post_title LIKE \'%' . esc_sql( like_escape( $search_term ) ) . '%\'';
 		}
 		return $where;
-	}
-	
-	function get_attributes( $vari ) {
-		$attributes = array();
-		foreach ( $vari->get_variation_attributes() as $attribute_name => $attribute ) {			
-			$attributes[] = array(
-				'name'   => esc_attr( sanitize_title( ucwords( str_replace( 'attribute_', '', str_replace( 'pa_', '', $attribute_name ) ) ) ) ),
-				'option' => esc_attr( sanitize_title( $attribute ) )
-			);
-		}
-		return $attributes;
 	}
 }
 

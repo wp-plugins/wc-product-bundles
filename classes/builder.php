@@ -1,5 +1,10 @@
 <?php 
-
+/**
+ * @author 		: Saravana Kumar K
+ * @copyright	: sarkware.com
+ * @todo		: HTML generator module, which wil uses "wcpb_dao" module to get data and render HTML skeletons.
+ *
+ */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 class wcpb_builder {
@@ -47,7 +52,7 @@ class wcpb_builder {
 							}
 							$index = 0;
 							$title = "";
-							$attributes = $this->get_attributes( $variation );
+							$attributes = wcpb_utils::get_variable_attributes( $variation );
 							foreach ( $attributes as $attr ) {
 								if( $index == 0 ) {
 									$title .= 'with '. $attr["option"];
@@ -101,18 +106,6 @@ class wcpb_builder {
 		<?php
 		}
 		return ob_get_clean();		
-	}
-	
-	function get_attributes( $vari ) {
-		$attributes = array();
-		foreach ( $vari->get_variation_attributes() as $attribute_name => $attribute ) {
-			// taxonomy-based attributes are prefixed with `pa_`, otherwise simply `attribute_`
-			$attributes[] = array(
-					'name'   => esc_attr( sanitize_title( ucwords( str_replace( 'attribute_', '', str_replace( 'pa_', '', $attribute_name ) ) ) ) ),
-					'option' => esc_attr( sanitize_title( $attribute ) ),
-			);
-		}
-		return $attributes;
 	}
 }
 

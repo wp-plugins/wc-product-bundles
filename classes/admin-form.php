@@ -2,7 +2,7 @@
 /**
  * @author 		: Saravana Kumar K
  * @copyright	: sarkware.com
- * @todo		: One of the core module, which renders the actual wccpf fields to the product page.
+ * @todo		: One of the core module, which renders the wcpb related tabs & fields on the product admin page.
  * 
  */
 
@@ -36,10 +36,22 @@ class wcpb_product_interface {
 		
 		echo '<div class="options_group pricing hide_if_virtual hide_if_grouped hide_if_external hide_if_simple hide_if_variable show_if_wcpb">';
 	
-		$sprice = get_post_meta( $post->ID, '_wcpb_product_sale_price', true );		
+		$sprice = wcpb_utils::get_wcpb_meta( $post->ID, '_wcpb_product_sale_price' );		
 		woocommerce_wp_text_input( array( 'id' => '_wcpb_product_sale_price', 'value' => $sprice, 'data_type' => 'price', 'label' => __( 'Bundle Price', 'woocommerce' ) . ' ('.get_woocommerce_currency_symbol().')', 'desc_tip' => 'true', 'description' => __( 'Enter your discounted price for this bundle, otherwise the price will be the sum of included products.', 'woocommerce' ) ) );
 		
 		do_action( 'woocommerce_product_options_pricing' );
+		
+		echo '</div>';
+		
+		echo '<div class="options_group pricing hide_if_virtual hide_if_grouped hide_if_external hide_if_simple hide_if_variable show_if_wcpb">';
+				
+		$on_product = wcpb_utils::get_wcpb_meta( $post->ID, '_wcpb_show_bundle_on_product', 'yes' );
+		$on_cart = wcpb_utils::get_wcpb_meta( $post->ID, '_wcpb_show_bundle_on_cart', 'yes' );
+		$on_order = wcpb_utils::get_wcpb_meta( $post->ID, '_wcpb_show_bundle_on_order', 'yes' );
+		
+		woocommerce_wp_checkbox( array( 'id' => '_wcpb_show_bundle_on_product', 'label' => __( 'Show on Product Page', 'woocommerce' ), 'value' => 'yes', 'cbvalue' => $on_product, 'desc_tip' => 'true', 'description' => __( 'Un check if you want to hide the bundle on product page.', 'woocommerce' ) ) );
+		woocommerce_wp_checkbox( array( 'id' => '_wcpb_show_bundle_on_cart', 'label' => __( 'Show on Cart Page', 'woocommerce' ), 'value' => 'yes', 'cbvalue' => $on_cart, 'desc_tip' => 'true', 'description' => __( 'Un check if you want to hide the bundle on cart.', 'woocommerce' ) ) );
+		woocommerce_wp_checkbox( array( 'id' => '_wcpb_show_bundle_on_order', 'label' => __( 'Show on Order', 'woocommerce' ), 'value' => 'yes', 'cbvalue' => $on_order, 'desc_tip' => 'true', 'description' => __( 'Un check if you want to hide the bundle on order.', 'woocommerce' ) ) );
 		
 		echo '</div>';
 	}

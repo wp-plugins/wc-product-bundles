@@ -2,10 +2,10 @@
 /**
  * @author 		: Saravana Kumar K
  * @copyright	: sarkware.com
- * @todo		: One of the core module, which renders the actual wccpf fields to the product page.
+ * @todo		: One of the core module, which renders the actual wcpb bundle on the product, cart and checkout pages.
+ * 				  also it manages stock synchronization and cart validation
  * 
  */
-
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 class wcpb_product_form {
@@ -25,8 +25,10 @@ class wcpb_product_form {
 	}
 	
 	function wcpb_product_form() { 
-		global $product;		
+		global $product;				
+		if( wcpb_utils::get_wcpb_meta( $product->id, '_wcpb_show_bundle_on_product', 'yes' ) == "yes" ) {		
 	?>
+	
 		<div class="wcpb-bundled-products-container">
 			<?php $bundles = apply_filters( 'wcpb/load/bundle', $product->id ); ?>
 			
@@ -80,6 +82,13 @@ class wcpb_product_form {
 			?>
 			
 		</div>
+		
+		<?php 
+		
+		}
+		
+		?>
+		
 		<form class="cart" method="post" enctype='multipart/form-data'>
 		 	<?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
 	
@@ -141,7 +150,7 @@ class wcpb_product_form {
 		}
 	}
 	
-	function wcpb_render_bundle_on_cart( $title = null, $cart_item = null, $cart_item_key = null ) {
+	function wcpb_render_bundle_on_cart( $title = null, $cart_item = null, $cart_item_key = null ) {				
 		if( is_cart() ) {
 			return $this->wcpb_render_bundle_item( $title, $cart_item );
 		}
@@ -149,57 +158,58 @@ class wcpb_product_form {
 	}
 	
 	function wcpb_render_bundle_on_order_review( $quantity = null, $cart_item = null, $cart_item_key = null ) {		
-		return $this->wcpb_render_bundle_item( $quantity, $cart_item );								
+		return $this->wcpb_render_bundle_item( $quantity, $cart_item );										
 	}
 	
 	function wcpb_render_bundle_item( $html, $cart_item ) {
 		if( isset( $cart_item['product_id'] ) ) {
 			$terms        = get_the_terms( $cart_item['product_id'], 'product_type' );
 			$product_type = ! empty( $terms ) ? sanitize_title( current( $terms )->name ) : 'simple';
-			if( $product_type == "wcpb" ) {
-				$bundles =  json_decode( get_post_meta( $cart_item['product_id'], "wcpb_bundle_products", true ), true );
-				if( has_filter( 'wcpb/bundle/item/rendering' ) ) {
-					$html .= apply_filters( 'wcpb/bundle/item/rendering', $bundles );
-				} else {
-					$html .= '<dl class="wcpb-cart-item-container">';
-					$html .= '<dt>'. apply_filters( 'wcpb/bundle/item/title', 'Bundle Includes' ) .'</dt>';
-					$html .= '<dd>';
-					foreach ( $bundles as $key => $bundle ) {
-						if ( get_post_type( $key ) == 'product_variation' ) {							
-							$html .= '<div>'. $bundle['quantity'] .' x <a href="'. get_permalink( wp_get_post_parent_id( $key ) ) .'">'. $bundle['title'] .'</a></div>';
-						} else {
-							$html .= '<div>'. $bundle['quantity'] .' x <a href="'. get_permalink( $key ) .'">'. $bundle['title'] .'</a></div>';
-						}												
+			if( $product_type == "wcpb" ) {				
+				if( wcpb_utils::get_wcpb_meta( $cart_item['product_id'], '_wcpb_show_bundle_on_cart', 'yes' ) == "yes" ) {				
+					$bundles =  json_decode( get_post_meta( $cart_item['product_id'], "wcpb_bundle_products", true ), true );
+					if( has_filter( 'wcpb/bundle/item/rendering' ) ) {
+						$html .= apply_filters( 'wcpb/bundle/item/rendering', $bundles );
+					} else {
+						$html .= '<dl class="wcpb-cart-item-container">';
+						$html .= '<dt>'. apply_filters( 'wcpb/bundle/item/title', 'Bundle Includes' ) .'</dt>';
+						$html .= '<dd>';
+						foreach ( $bundles as $key => $bundle ) {
+							if ( get_post_type( $key ) == 'product_variation' ) {							
+								$html .= '<div>'. $bundle['quantity'] .' x <a href="'. get_permalink( wp_get_post_parent_id( $key ) ) .'">'. $bundle['title'] .'</a></div>';
+							} else {
+								$html .= '<div>'. $bundle['quantity'] .' x <a href="'. get_permalink( $key ) .'">'. $bundle['title'] .'</a></div>';
+							}												
+						}
+						$html .= '</dd>';
+						$html .= '</dl>';
 					}
-					$html .= '</dd>';
-					$html .= '</dl>';
+					return $html;				
 				}
-				return $html;
-			} else {
-				return $html;
 			}
-		} else {
-			return $html;
 		}
+		return $html;		
 	}
 	
 	function wcpb_add_bundle_as_order_meta( $item_id, $values, $cart_item_key ) {
 		if( isset( $values['product_id'] ) ) {
 			$terms        = get_the_terms( $values['product_id'], 'product_type' );
 			$product_type = ! empty( $terms ) ? sanitize_title( current( $terms )->name ) : 'simple';
-			if( $product_type == "wcpb" ) {
-				$index = 0;
-				$btitle = '';
-				$bundles =  json_decode( get_post_meta( $values['product_id'], "wcpb_bundle_products", true ), true );
-				foreach ( $bundles as $key => $bundle ) {
-					if( $index == 0 ) {
-						$btitle .= $bundle['quantity'] .'x'. $bundle['title'];
-					} else {
-						$btitle .= ', '. $bundle['quantity'] .'x'. $bundle['title'];
+			if( $product_type == "wcpb" ) {				
+				if( wcpb_utils::get_wcpb_meta( $values['product_id'], '_wcpb_hide_bundle_on_order', 'yes' ) == "yes" ) {
+					$index = 0;
+					$btitle = '';
+					$bundles =  json_decode( get_post_meta( $values['product_id'], "wcpb_bundle_products", true ), true );
+					foreach ( $bundles as $key => $bundle ) {
+						if( $index == 0 ) {
+							$btitle .= $bundle['quantity'] .'x'. $bundle['title'];
+						} else {
+							$btitle .= ', '. $bundle['quantity'] .'x'. $bundle['title'];
+						}
+						$index++;
 					}
-					$index++;
+					wc_add_order_item_meta( $item_id, "Bundle Includes", $btitle );
 				}
-				wc_add_order_item_meta( $item_id, "Bundle Includes", $btitle );
 			}
 		}
 	}
