@@ -22,6 +22,8 @@ WC Product Bundle allows you to bundle two or more woocommerce products together
 
 = Documentation =
 * [Getting Started](http://sarkware.com/wc-product-bundle-bundle-products-together-and-sell-them-with-a-discounted-rate/)
+* [Customize Bundle Rendering Behavior - Product](http://sarkware.com/changing-bundles-rendering-behaviour-wc-product-bundles/)
+* [Customize Bundle Rendering Behavior - Cart](http://sarkware.com/changing-rendering-behavior-bundle-item-on-cart-wc-product-bundles/)
 
 == Installation ==
 1. Ensure you have latest version of WooCommerce plugin installed ( 2.2 or above )
