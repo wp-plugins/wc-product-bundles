@@ -105,7 +105,12 @@ class wcpb_dao {
 			/* Update the bundles */
 			$bundles =  json_decode( get_post_meta( $post_id, "wcpb_bundle_products", true ), true );			
 			if( is_array( $bundles ) ) {
-				update_post_meta( $post_id, 'wcpb_bundle_products', $_REQUEST['wcpb-bundles-array'] );
+				$bundles = array();				
+				$temp_bundles = json_decode( stripslashes( $_REQUEST['wcpb-bundles-array'] ), true );				
+				foreach ( $temp_bundles as $bundle ) {
+					$bundles[ $bundle["product_id"] ] = $bundle["bundle"];
+				}				
+				update_post_meta( $post_id, 'wcpb_bundle_products', wp_slash( json_encode( $bundles ) ) );
 			}				
 		}		
 	}
@@ -116,7 +121,7 @@ class wcpb_dao {
 		if( is_array( $bundles ) ) {
 			if( isset( $bundles[ $bundle ] ) ) {
 				unset( $bundles[ $bundle ] );
-				return update_post_meta( wcpb()->request['post'], 'wcpb_bundle_products', json_encode( $bundles ) );
+				return update_post_meta( wcpb()->request['post'], 'wcpb_bundle_products', wp_slash( json_encode( $bundles ) ) );
 			}				
 		}		
 		return false;

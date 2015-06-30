@@ -62,17 +62,25 @@
 		};	
 		
 		this.onPostSubmit = function() {
-			var bundles = {};
-			$("#wcpb-products-container > div").each(function(){
-				bundles[ $(this).attr('product_id') ] = {						
-					quantity : $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_quantity]").val(),
-					price : $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_price]").val(),
-					tax_included : ( $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_tax_included]").is(':checked') ) ? "yes" : "no",
-					thumbnail : ( $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_thumbnail]").is(':checked') ) ? "yes" : "no",
-					title : $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_title]").val(),
-					desc : $("textarea[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_desc]").val()
-				};
-			});			
+			var key = "";
+			var bundles = [];
+			$("#wcpb-products-container > div").each(function(){	
+				key = $(this).attr('product_id');
+				bundles.push( 
+					{ 
+						"product_id" : key,
+						"bundle" : {						
+							quantity : $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_quantity]").val(),
+							price : $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_price]").val(),	
+							tax_included : ( $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_tax_included]").is(':checked') ) ? "yes" : "no",
+							thumbnail : ( $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_thumbnail]").is(':checked') ) ? "yes" : "no",
+							title : $("input[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_title]").val(),
+							desc : $("textarea[name=wcpb_bundle_product_"+ $(this).attr('product_id') +"_desc]").val()
+						} 
+					} 
+				);
+			});		
+			
 			$("#wcpb-bundles-array").val( JSON.stringify( bundles ) );			
 		};
 		

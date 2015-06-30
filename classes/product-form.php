@@ -64,7 +64,15 @@ class wcpb_product_form {
 						<td>
 							<a href="<?php echo $product_url; ?>" class="wcpb-bundled-product-title"><h1><?php echo $value['quantity'] ." x ". $value['title']; ?></h1></a>
 							<p class="wcpb-bundled-product-desc"><?php echo $value['desc']; ?></p>
-							<p class="wcpb-bundled-product-stock"><?php echo ( $bundle->has_enough_stock( $value['quantity'] ) ) ? '<span class="wcpb-in-stock-label">instock</span>' : '<span class="wcpb-out-of-stock-label">out of stock</span>';  ?></p>
+							<p class="wcpb-bundled-product-stock">
+								<?php 
+								if( $bundle->has_enough_stock( $value['quantity'] ) ) {
+									echo '<span class="wcpb-in-stock-label">'. apply_filters( 'wcpb/bundle/instock/label', 'instock' ) .'</span>';
+								} else {
+									echo '<span class="wcpb-out-of-stock-label">'.  apply_filters( 'wcpb/bundle/outofstock/label', 'out of stock' )  .'</span>'; 
+								}
+								?>
+							</p>
 						</td>
 					</tr>
 				</table>
