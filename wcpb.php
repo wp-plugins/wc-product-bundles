@@ -3,7 +3,7 @@
  Plugin Name: WC Product Bundles
  Plugin URI: http://sarkware.com/wc-product-bundle-bundle-products-together-and-sell-them-with-a-discounted-rate/
  Description: Bundle two or more woocommerce products together and sell them at a discounted rate. 
- Version: 1.0.3
+ Version: 1.0.4
  Author: Saravana Kumar K
  Author URI: http://www.iamsark.com/
  License: GPL
@@ -25,26 +25,28 @@ class wc_product_bundles {
 		$this->settings = array(
 				'path'				=> plugin_dir_path( __FILE__ ),
 				'dir'				=> plugin_dir_url( __FILE__ ),
-				'version'			=> '1.0.3'
+				'version'			=> '1.0.4'
 		);
 	
 		add_action( 'init', array( $this, 'init' ), 1 );
 		add_action( 'plugins_loaded', array( $this, 'setup_front_end_env' ), 1 );
 		add_filter( 'wcpb/get_info', array( $this, 'wccpf_get_info' ), 1, 1 );	
+		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
 	
 	}
 	
-	function init() {
+	function init() {	
 		if( is_admin() ) {
-			wp_register_script( 'wcpb-script', $this->settings['dir'] . "assets/js/wcpb.js", 'jquery', $this->settings['version'] );
-			wp_register_style( 'wcpb-style', $this->settings['dir'] . 'assets/css/wcpb-admin.css' );
-			wp_enqueue_style( 'wcpb-style' );
-			wp_enqueue_script( 'wcpb-script' );
+			if( $_REQUEST["action"] == 'edit' || $_REQUEST["post_type"] == "product" ) {
+				wp_register_script( 'wcpb-script', $this->settings['dir'] . "assets/js/wcpb.js", 'jquery', $this->settings['version'] );
+				wp_register_style( 'wcpb-style', $this->settings['dir'] . 'assets/css/wcpb-admin.css' );
+				wp_enqueue_style( 'wcpb-style' );
+				wp_enqueue_script( 'wcpb-script' );
+			}
 		} else {
 			wp_register_style( 'wcpb-style', $this->settings['dir'] . 'assets/css/wcpb-front-end.css' );
 			wp_enqueue_style( 'wcpb-style' );
 		}
-		
 		$this->wcpb_includes();
 	}
 	
@@ -58,9 +60,13 @@ class wc_product_bundles {
 		include_once('classes/utils.php');
 	}
 	
-	function setup_front_end_env() {
+	function setup_front_end_env() {		
 		include_once('classes/wc_bundled_product.php');
-		include_once('classes/product-form.php');
+		include_once('classes/product-form.php');		
+	}
+	
+	function load_scripts() {		
+		
 	}
 	
 	function wccpf_get_info( $i ) {

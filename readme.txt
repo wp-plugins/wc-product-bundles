@@ -3,7 +3,7 @@ Contributors: mycholan
 Tags: Woocommerce product bundle
 Requires at least: 3.5
 Tested up to: 4.2.2
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -51,4 +51,6 @@ WC Product Bundle allows you to bundle two or more woocommerce products together
 = 1.0.3 =
 * Bundle re order issue fixed
 * introduced filter for 'instock' & 'out of stock' labels. 'wcpb/bundle/instock/label' and 'wcpb/bundle/outofstock/label'
- 
+
+= 1.0.4 =
+* wp-admin 'Screen Option' tab issue fixed
