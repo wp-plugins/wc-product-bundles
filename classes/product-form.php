@@ -57,19 +57,19 @@ class wcpb_product_form {
 						<!-- bundled product's thumbnail section -->
 						<?php if( $value["thumbnail"] == "yes" ) : ?>				
 						<td class="wcpb-thumbnail-td">				
-							<a href="<?php echo $product_url; ?>" title="<?php echo $value['title']; ?>" class="wcpb-featured"><?php echo $bundle->get_image( 'thumbnail' ); ?></a>					
+							<a href="<?php echo esc_url( $product_url ); ?>" title="<?php echo esc_attr( $value['title'] ); ?>" class="wcpb-featured"><?php echo $bundle->get_image( 'thumbnail' ); ?></a>					
 						</td>
 						<?php endif; ?>
 						<!-- bundled product's summary section -->
 						<td>
-							<a href="<?php echo $product_url; ?>" class="wcpb-bundled-product-title"><h1><?php echo $value['quantity'] ." x ". $value['title']; ?></h1></a>
-							<p class="wcpb-bundled-product-desc"><?php echo $value['desc']; ?></p>
+							<a href="<?php echo esc_url( $product_url ); ?>" class="wcpb-bundled-product-title"><h1><?php echo esc_html( $value['quantity'] ) ." x ". esc_html( $value['title'] ); ?></h1></a>
+							<p class="wcpb-bundled-product-desc"><?php echo esc_html( $value['desc'] ); ?></p>
 							<p class="wcpb-bundled-product-stock">
 								<?php 
 								if( $bundle->has_enough_stock( $value['quantity'] ) ) {
-									echo '<span class="wcpb-in-stock-label">'. apply_filters( 'wcpb/bundle/instock/label', 'instock' ) .'</span>';
+									echo '<span class="wcpb-in-stock-label">'. apply_filters( 'wcpb/bundle/instock/label', __( 'instock', 'wc-product-bundles' ) ) .'</span>';
 								} else {
-									echo '<span class="wcpb-out-of-stock-label">'.  apply_filters( 'wcpb/bundle/outofstock/label', 'out of stock' )  .'</span>'; 
+									echo '<span class="wcpb-out-of-stock-label">'.  apply_filters( 'wcpb/bundle/outofstock/label', __( 'out of stock', 'wc-product-bundles' ) )  .'</span>'; 
 								}
 								?>
 							</p>
@@ -110,7 +110,7 @@ class wcpb_product_form {
 	
 		 	<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->id ); ?>" />
 	
-		 	<button type="submit" class="single_add_to_cart_button button alt"><?php echo $product->single_add_to_cart_text(); ?></button>
+		 	<button type="submit" class="single_add_to_cart_button button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
 	
 			<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
 		</form>
@@ -180,13 +180,13 @@ class wcpb_product_form {
 						$html .= apply_filters( 'wcpb/bundle/item/rendering', $bundles );
 					} else {
 						$html .= '<dl class="wcpb-cart-item-container">';
-						$html .= '<dt>'. apply_filters( 'wcpb/bundle/item/title', 'Bundle Includes' ) .'</dt>';
+						$html .= '<dt>'. apply_filters( 'wcpb/bundle/item/title', __( 'Bundle Includes', 'wc-product-bundles' ) ) .'</dt>';
 						$html .= '<dd>';
 						foreach ( $bundles as $key => $bundle ) {
 							if ( get_post_type( $key ) == 'product_variation' ) {							
-								$html .= '<div>'. $bundle['quantity'] .' x <a href="'. get_permalink( wp_get_post_parent_id( $key ) ) .'">'. $bundle['title'] .'</a></div>';
+								$html .= '<div>'. $bundle['quantity'] .' x <a href="'. get_permalink( wp_get_post_parent_id( $key ) ) .'">'. esc_html( $bundle['title'] ) .'</a></div>';
 							} else {
-								$html .= '<div>'. $bundle['quantity'] .' x <a href="'. get_permalink( $key ) .'">'. $bundle['title'] .'</a></div>';
+								$html .= '<div>'. $bundle['quantity'] .' x <a href="'. get_permalink( $key ) .'">'. esc_html( $bundle['title'] ) .'</a></div>';
 							}												
 						}
 						$html .= '</dd>';
@@ -210,9 +210,9 @@ class wcpb_product_form {
 					$bundles =  json_decode( get_post_meta( $values['product_id'], "wcpb_bundle_products", true ), true );
 					foreach ( $bundles as $key => $bundle ) {
 						if( $index == 0 ) {
-							$btitle .= $bundle['quantity'] .'x'. $bundle['title'];
+							$btitle .= $bundle['quantity'] .'x'. esc_html( $bundle['title'] );
 						} else {
-							$btitle .= ', '. $bundle['quantity'] .'x'. $bundle['title'];
+							$btitle .= ', '. $bundle['quantity'] .'x'. esc_html( $bundle['title'] );
 						}
 						$index++;
 					}
@@ -286,7 +286,7 @@ class wcpb_product_form {
 		$product_type = ! empty( $terms ) ? sanitize_title( current( $terms )->name ) : 'simple';
 		
 		if( $product_type == "wcpb" ) {
-			return apply_filters( 'wcpb_combo_pack_label', '<span class="onsale">Combo</span>' );
+			return apply_filters( 'wcpb_combo_pack_label', '<span class="onsale">'. __( 'Combo', 'wc-product-bundles' ) .'</span>' );
 		} else {
 			return $label;
 		}
@@ -302,7 +302,7 @@ class wcpb_product_form {
 				foreach ( $bundles as $key => $value ) {
 					$bundle = wc_get_product( $key );
 					if( !$bundle->has_enough_stock( intval( $quantity ) * intval( $value['quantity'] ) ) ) {
-						wc_add_notice( __( 'You cannot add that amount of quantity, because there is not enough stock', 'woocommerce' ), 'error' );
+						wc_add_notice( __( 'You cannot add that amount of quantity, because there is not enough stock', 'wc-product-bundles' ), 'error' );
 						return false;
 					}
 				}

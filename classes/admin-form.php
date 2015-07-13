@@ -18,13 +18,13 @@ class wcpb_product_interface {
 	}
 	
 	function wcpb_add_product_bundle_type( $ptypes, $ptype ) {
-		$ptypes['wcpb'] = __( 'Bundled', 'woocommerce' );
+		$ptypes['wcpb'] = __( 'Bundled', 'wc-product-bundles' );
 		return $ptypes;
 	}
 	
 	function wcpb_add_product_bundle_tab( $tabs ) {
 		$tabs['wcpb'] = array (
-			'label'  => __( 'Products Bundled', 'woocommerce' ),
+			'label'  => __( 'Products Bundled', 'wc-product-bundles' ),
 			'target' => 'wcpb_data',
 			'class'  => array( 'hide_if_virtual', 'hide_if_grouped', 'hide_if_external', 'hide_if_simple', 'hide_if_variable', 'show_if_wcpb' ),
 		);
@@ -37,7 +37,7 @@ class wcpb_product_interface {
 		echo '<div class="options_group pricing hide_if_virtual hide_if_grouped hide_if_external hide_if_simple hide_if_variable show_if_wcpb">';
 	
 		$sprice = wcpb_utils::get_wcpb_meta( $post->ID, '_wcpb_product_sale_price' );		
-		woocommerce_wp_text_input( array( 'id' => '_wcpb_product_sale_price', 'value' => $sprice, 'data_type' => 'price', 'label' => __( 'Bundle Price', 'woocommerce' ) . ' ('.get_woocommerce_currency_symbol().')', 'desc_tip' => 'true', 'description' => __( 'Enter your discounted price for this bundle, otherwise the price will be the sum of included products.', 'woocommerce' ) ) );
+		woocommerce_wp_text_input( array( 'id' => '_wcpb_product_sale_price', 'value' => esc_html( $sprice ), 'data_type' => 'price', 'label' => __( 'Bundle Price', 'wc-product-bundles' ) . ' ('.get_woocommerce_currency_symbol().')', 'desc_tip' => 'true', 'description' => __( 'Enter your discounted price for this bundle, otherwise the price will be the sum of included products.', 'wc-product-bundles' ) ) );
 		
 		do_action( 'woocommerce_product_options_pricing' );
 		
@@ -49,9 +49,9 @@ class wcpb_product_interface {
 		$on_cart = wcpb_utils::get_wcpb_meta( $post->ID, '_wcpb_show_bundle_on_cart', 'yes' );
 		$on_order = wcpb_utils::get_wcpb_meta( $post->ID, '_wcpb_show_bundle_on_order', 'yes' );
 		
-		woocommerce_wp_checkbox( array( 'id' => '_wcpb_show_bundle_on_product', 'label' => __( 'Show on Product Page', 'woocommerce' ), 'value' => 'yes', 'cbvalue' => $on_product, 'desc_tip' => 'true', 'description' => __( 'Un check if you want to hide the bundle on product page.', 'woocommerce' ) ) );
-		woocommerce_wp_checkbox( array( 'id' => '_wcpb_show_bundle_on_cart', 'label' => __( 'Show on Cart Page', 'woocommerce' ), 'value' => 'yes', 'cbvalue' => $on_cart, 'desc_tip' => 'true', 'description' => __( 'Un check if you want to hide the bundle on cart.', 'woocommerce' ) ) );
-		woocommerce_wp_checkbox( array( 'id' => '_wcpb_show_bundle_on_order', 'label' => __( 'Show on Order', 'woocommerce' ), 'value' => 'yes', 'cbvalue' => $on_order, 'desc_tip' => 'true', 'description' => __( 'Un check if you want to hide the bundle on order.', 'woocommerce' ) ) );
+		woocommerce_wp_checkbox( array( 'id' => '_wcpb_show_bundle_on_product', 'label' => __( 'Show on Product Page', 'wc-product-bundles' ), 'value' => 'yes', 'cbvalue' => $on_product, 'desc_tip' => 'true', 'description' => __( 'Un check if you want to hide the bundle on product page.', 'wc-product-bundles' ) ) );
+		woocommerce_wp_checkbox( array( 'id' => '_wcpb_show_bundle_on_cart', 'label' => __( 'Show on Cart Page', 'wc-product-bundles' ), 'value' => 'yes', 'cbvalue' => $on_cart, 'desc_tip' => 'true', 'description' => __( 'Un check if you want to hide the bundle on cart.', 'wc-product-bundles' ) ) );
+		woocommerce_wp_checkbox( array( 'id' => '_wcpb_show_bundle_on_order', 'label' => __( 'Show on Order', 'wc-product-bundles' ), 'value' => 'yes', 'cbvalue' => $on_order, 'desc_tip' => 'true', 'description' => __( 'Un check if you want to hide the bundle on order.', 'wc-product-bundles' ) ) );
 		
 		echo '</div>';
 	}
@@ -69,9 +69,9 @@ class wcpb_product_interface {
 					</div>												      
 				</li>
 				<li>						
-					<a href="#" class="wcpb_close_all">Close all</a>
-					<a href="#" class="wcpb_expand_all">Expand all</a>
-					<a href="#" class="button button-primary button-large" id="wcpb-add-product">Add Products</a>
+					<a href="#" class="wcpb_close_all"><?php _e( 'Close all', 'wc-product-bundles' ); ?></a>
+					<a href="#" class="wcpb_expand_all"><?php _e( 'Expand all', 'wc-product-bundles' ); ?></a>
+					<a href="#" class="button button-primary button-large" id="wcpb-add-product"><?php _e( 'Add Products', 'wc-product-bundles' ); ?></a>
 				</li>
 			</ul>			
 			

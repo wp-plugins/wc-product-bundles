@@ -3,7 +3,7 @@ Contributors: mycholan
 Tags: Woocommerce product bundle
 Requires at least: 3.5
 Tested up to: 4.2.2
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,3 +54,7 @@ WC Product Bundle allows you to bundle two or more woocommerce products together
 
 = 1.0.4 =
 * wp-admin 'Screen Option' tab issue fixed
+
+= 1.0.5 =
+* Internationalization ( i18n ) support added
+* Text domain is 'wc-product-bundles'

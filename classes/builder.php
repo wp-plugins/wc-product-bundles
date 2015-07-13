@@ -31,7 +31,7 @@ class wcpb_builder {
 			if( !in_array( $product->ID, $bundles ) ) {
 				$p = wc_setup_product_data( $product );
 				if( $p->product_type == "simple" ) {
-					$html .= '<li class="wcpb-product"><a href="#" product_id="'. $product->ID .'" product_type="simple" title="'.$product->post_title.'">#'. $product->ID .' - '. $product->post_title .'</a></li>';
+					$html .= '<li class="wcpb-product"><a href="#" product_id="'. $product->ID .'" product_type="simple" title="'. esc_attr( $product->post_title ) .'">#'. $product->ID .' - '. esc_html( $product->post_title ) .'</a></li>';
 				} else if( $p->product_type == "variable" ) {
 					$variations = array();						
 					$args = array(
@@ -61,7 +61,7 @@ class wcpb_builder {
 								}
 								$index++;
 							}
-							$html .= '<li class="wcpb-product"><a href="#" product_id="'. $variation->get_variation_id() .'" product_type="simple" title="'. trim( $title ) .'">#'. $variation->get_variation_id() .' - '. $product->post_title .' '. trim( $title ) .'</a></li>';
+							$html .= '<li class="wcpb-product"><a href="#" product_id="'. $variation->get_variation_id() .'" product_type="simple" title="'. esc_attr( trim( $title ) ) .'">#'. $variation->get_variation_id() .' - '. esc_html( $product->post_title ) .' '. esc_html( trim( $title ) ) .'</a></li>';
 						}						
 					}
 				}	
@@ -84,16 +84,16 @@ class wcpb_builder {
 					?>			
 					<div class="wcpb-product-bundle-row wc-metabox" product_id="<?php echo $key; ?>">
 						<h3 class="wcpb-product-bundle-row-header">
-							<strong>#<?php echo $key; ?> <?php echo $value['title'];?> - <?php echo $p->product_type; ?></strong>
-							<a href="#" title="Remove <?php echo $value['title'];?> from bundle" product_id="<?php echo $key; ?>" class="button wcpb-remove-bundle-btn">Remove</a>
+							<strong>#<?php echo esc_html( $key ); ?> <?php echo esc_html( $value['title'] );?> - <?php echo esc_html( $p->product_type ); ?></strong>
+							<a href="#" title="<?php _e( 'Remove', 'wc-product-bundles' ); ?> <?php echo esc_attr( $value['title'] ); ?> <?php _e( 'from bundle', 'wc-product-bundles' ); ?>" product_id="<?php echo esc_attr( $key ); ?>" class="button wcpb-remove-bundle-btn"><?php _e( 'Remove', 'wc-product-bundles' ); ?></a>
 						</h3>
 						<div class="wcpb-wc-metabox-content">
-							<?php woocommerce_wp_checkbox( array( 'id' => 'wcpb_bundle_product_'. $key .'_thumbnail', 'label' => __( 'Show Thumbnail', 'woocommerce' ), 'value' => 'yes', 'cbvalue' => $value['thumbnail'], 'desc_tip' => 'true', 'description' => __( 'Check if you want to show the thumbnail of this product.', 'woocommerce' ) ) ); ?>
-							<?php woocommerce_wp_checkbox( array( 'id' => 'wcpb_bundle_product_'. $key .'_tax_included', 'label' => __( 'Include Tax', 'woocommerce' ), 'value' => 'yes', 'cbvalue' => $value['tax_included'], 'desc_tip' => 'true', 'description' => __( 'Check if you want to include the tax with price.', 'woocommerce' ) ) ); ?>							
-							<?php //woocommerce_wp_text_input( array( 'id' => 'wcpb_bundle_product_'. $key .'_price', 'label' => __( 'Price', 'woocommerce' ), 'value' => $value['price'], 'desc_tip' => 'true', 'description' => __( 'Give a special price. If you leave it blank, product\'s regular price will be used instead', 'woocommerce' ) ) ); ?>	
-							<?php woocommerce_wp_text_input( array( 'id' => 'wcpb_bundle_product_'. $key .'_quantity', 'label' => __( 'Quantity', 'woocommerce' ), 'value' => $value['quantity'], 'desc_tip' => 'true', 'description' => __( 'How many quantity should be added to the bundle. If you leave it blank, by default it will be 1', 'woocommerce' ) ) ); ?>		
-							<?php woocommerce_wp_text_input( array( 'id' => 'wcpb_bundle_product_'. $key .'_title', 'label' => __( 'Title', 'woocommerce' ), 'value' => $value['title'], 'desc_tip' => 'true', 'description' => __( 'Give a special title, otherwise original title will be used instead.', 'woocommerce' ) ) ); ?>
-							<?php woocommerce_wp_textarea_input( array( 'id' => 'wcpb_bundle_product_'. $key .'_desc', 'label' => __( 'Short Description', 'woocommerce' ), 'value' => $value['desc'], 'desc_tip' => 'true', 'description' => __( 'Give short description, otherwise original product\'s excerpt will be used instead.', 'woocommerce' ) ) ); ?>						
+							<?php woocommerce_wp_checkbox( array( 'id' => 'wcpb_bundle_product_'. $key .'_thumbnail', 'label' => __( 'Show Thumbnail', 'wc-product-bundles' ), 'value' => 'yes', 'cbvalue' => $value['thumbnail'], 'desc_tip' => 'true', 'description' => __( 'Check if you want to show the thumbnail of this product.', 'wc-product-bundles' ) ) ); ?>
+							<?php woocommerce_wp_checkbox( array( 'id' => 'wcpb_bundle_product_'. $key .'_tax_included', 'label' => __( 'Include Tax', 'wc-product-bundles' ), 'value' => 'yes', 'cbvalue' => $value['tax_included'], 'desc_tip' => 'true', 'description' => __( 'Check if you want to include the tax with price.', 'wc-product-bundles' ) ) ); ?>							
+							<?php //woocommerce_wp_text_input( array( 'id' => 'wcpb_bundle_product_'. $key .'_price', 'label' => __( 'Price', 'wc-product-bundles' ), 'value' => $value['price'], 'desc_tip' => 'true', 'description' => __( 'Give a special price. If you leave it blank, product\'s regular price will be used instead', 'woocommerce' ) ) ); ?>	
+							<?php woocommerce_wp_text_input( array( 'id' => 'wcpb_bundle_product_'. $key .'_quantity', 'label' => __( 'Quantity', 'wc-product-bundles' ), 'value' => $value['quantity'], 'desc_tip' => 'true', 'description' => __( 'How many quantity should be added to the bundle. If you leave it blank, by default it will be 1', 'wc-product-bundles' ) ) ); ?>		
+							<?php woocommerce_wp_text_input( array( 'id' => 'wcpb_bundle_product_'. $key .'_title', 'label' => __( 'Title', 'wc-product-bundles' ), 'value' => $value['title'], 'desc_tip' => 'true', 'description' => __( 'Give a special title, otherwise original title will be used instead.', 'wc-product-bundles' ) ) ); ?>
+							<?php woocommerce_wp_textarea_input( array( 'id' => 'wcpb_bundle_product_'. $key .'_desc', 'label' => __( 'Short Description', 'wc-product-bundles' ), 'value' => $value['desc'], 'desc_tip' => 'true', 'description' => __( 'Give short description, otherwise original product\'s excerpt will be used instead.', 'wc-product-bundles' ) ) ); ?>						
 						</div>
 					</div>
 					<?php	
@@ -101,7 +101,7 @@ class wcpb_builder {
 			}	
 		} else { ?>
 			<div class="wcpb-empty-msg">
-				<p>Search for products, select as many as product you want and add those to bundle using "Add Products". Only "Simple" or "variable" product are allowed to add. You can also drag drop to re arrange the order of bundled products in product page.!</p>
+				<p><?php _e( 'Search for products, select as many as product you want and add those to bundle using "Add Products". Only "Simple" or "variable" product are allowed to add. You can also drag drop to re arrange the order of bundled products in product page.!', 'wc-product-bundles' ); ?></p>
 			</div>
 		<?php
 		}
