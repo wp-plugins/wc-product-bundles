@@ -47,7 +47,9 @@ class wc_product_bundles {
 			wp_register_style( 'wcpb-style', $this->settings['dir'] . 'assets/css/wcpb-front-end.css' );
 			wp_enqueue_style( 'wcpb-style' );
 		}
-		$this->wcpb_includes();
+		
+		load_plugin_textdomain( 'wc-product-bundles', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+		$this->wcpb_includes();		
 	}
 	
 	function wcpb_includes() {		
