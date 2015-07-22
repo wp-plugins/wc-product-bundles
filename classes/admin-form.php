@@ -61,7 +61,7 @@ class wcpb_product_interface {
 			<ul class="wcpb-product-search-container-ul wc-metaboxes-wrapper">  
 				<li>
 					<div class="wcpb-product-search-txt-wrapper">
-						<input type="text" id="wcpb-product-search-txt" placeholder="Search Products" />
+						<input type="text" id="wcpb-product-search-txt" placeholder="<?php _e( 'Search Products', 'wc-product-bundles' ); ?>" />
 						<img alt="spinner" src="<?php echo wcpb()->settings['dir'] ?>/assets/images/spinner.gif" id="wcpb-ajax-spinner" />
 						<div id="wcpb-product-search-result-holder">
 						

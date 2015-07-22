@@ -18,7 +18,7 @@ class wcpb_product_form {
 		add_filter( 'woocommerce_cart_item_name', array( $this, 'wcpb_render_bundle_on_cart' ), 1, 3 );
 		add_filter( 'woocommerce_checkout_cart_item_quantity', array( $this, 'wcpb_render_bundle_on_order_review' ), 1, 3 );	
 		add_action( 'woocommerce_add_order_item_meta', array( $this, 'wcpb_add_bundle_as_order_meta' ), 1, 3 );
-		add_action( 'woocommerce_payment_complete', array( $this, 'wcpb_sync_bundle_stocks' ) );
+		add_action( 'woocommerce_reduce_order_stock', array( $this, 'wcpb_sync_bundle_stocks' ) );
 		add_action( 'woocommerce_order_status_cancelled', array( $this, 'wcpb_re_sync_bundle_stocks' ) );
 		add_filter( 'woocommerce_sale_flash', array( $this, 'wcpb_add_combo_pack_label' ), 10, 2 );		
 		add_filter( 'woocommerce_add_to_cart_validation', array( $this, 'wcpb_add_to_cart_bundle_validation' ), 10, 3 );
