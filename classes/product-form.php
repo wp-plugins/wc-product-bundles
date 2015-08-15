@@ -63,7 +63,21 @@ class wcpb_product_form {
 						<!-- bundled product's summary section -->
 						<td>
 							<a href="<?php echo esc_url( $product_url ); ?>" class="wcpb-bundled-product-title"><h1><?php echo esc_html( $value['quantity'] ) ." x ". esc_html( $value['title'] ); ?></h1></a>
-							<p class="wcpb-bundled-product-desc"><?php echo esc_html( $value['desc'] ); ?></p>
+							
+							<?php 
+								$desc = "";								
+								if( $value['desc'] != "" && $value['desc'] != null ) {
+									$desc = $value['desc'];
+								} else {
+									if( $bundle->post->post_excerpt != "" && $bundle->post->post_excerpt != null ) {
+										$desc = $bundle->post->post_excerpt;
+									} else {
+										$desc = wp_trim_words( $bundle->post->post_content, apply_filters( 'excerpt_length', 55 ), "..." );
+									}
+								}							
+							?>
+							
+							<p class="wcpb-bundled-product-desc"><?php echo esc_html( $desc ); ?></p>
 							<p class="wcpb-bundled-product-stock">
 								<?php 
 								if( $bundle->has_enough_stock( $value['quantity'] ) ) {

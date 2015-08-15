@@ -30,7 +30,7 @@ class WC_Product_Wcpb extends WC_Product {
 			/* Sale price has been set by user */
 			$this->price = $sprice;
 		} else {
-			/* Sale price has been set,
+			/* Sale price has not been set,
 			 * So here we are going to sum
 			 **/
 			$bundles =  json_decode( get_post_meta( $this->id, "wcpb_bundle_products", true ), true );
@@ -80,6 +80,38 @@ class WC_Product_Wcpb extends WC_Product {
 		}
 		$this->regular_price = apply_filters( 'wcpb_bundle_regular_price', $price, $this );
 		return $this->regular_price;
+	}
+	
+	/**
+	 * Returns the product weight - in this case sum of bundles items weight.
+	 *
+	 * @return decimal
+	 */
+	public function get_weight() {
+		$weight = 0;		
+		if( parent::get_weight() ) {
+			$weight = parent::get_weight();
+		} else {		
+			$bundles =  json_decode( get_post_meta( $this->id, "wcpb_bundle_products", true ), true );
+			if( is_array( $bundles ) ) {
+				foreach ( $bundles as $key => $value ) {
+					$bundle = new WC_Product( $key );
+					if( $bundle->has_weight() ) {
+						$weight += ( floatval( $bundle->get_weight() ) * intval( $value["quantity"] ) );
+					}				
+				}
+			}
+		}		
+		return $weight;
+	}
+	
+	/**
+	 * Returns whether or not the product has weight set.
+	 *
+	 * @return bool
+	 */
+	public function has_weight() {
+		return $this->get_weight() ? true : false;
 	}
 
 }

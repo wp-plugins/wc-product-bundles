@@ -2,8 +2,8 @@
 Contributors: mycholan
 Tags: Woocommerce product bundle
 Requires at least: 3.5
-Tested up to: 4.2.2
-Stable tag: 1.0.6
+Tested up to: 4.2.4
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,3 +61,7 @@ WC Product Bundle allows you to bundle two or more woocommerce products together
 
 = 1.0.6 =
 * Bundles inventory sync issue fixed
+
+= 1.0.7 =
+* Bundled items description issue fixed
+* Shipping weight sync added ( The weight will be the sum of bundled items, if no weight is specified )
